@@ -67,7 +67,7 @@ export default function App() {
       default:
         if (tingkatMenu.includes(currentView)) {
           return <DataSiswa 
-            students={students.filter(s => s.tingkat === currentView)} 
+            students={students} 
             setStudents={setStudents} 
             onNavigate={setCurrentView} 
             activeTingkat={currentView}
