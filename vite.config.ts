@@ -13,19 +13,45 @@ export default defineConfig(({mode}) => {
       VitePWA({
         registerType: 'autoUpdate',
         includeAssets: ['icon.svg'],
+        workbox: {
+          globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+          runtimeCaching: [
+            {
+              urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'google-fonts-cache',
+                expiration: {
+                  maxEntries: 10,
+                  maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+                },
+                cacheableResponse: {
+                  statuses: [0, 200]
+                }
+              }
+            }
+          ]
+        },
         manifest: {
-          name: 'BK SMKN1 BUNYU',
-          short_name: 'BK SMKN1',
-          description: 'Aplikasi untuk mengelola data pelanggaran dan bimbingan siswa SMK.',
+          name: 'KONSELOR SMK NEGERI 1 BUNYU',
+          short_name: 'Konselor SMKN1',
+          description: 'Sistem Administrasi Guru BK SMK Negeri 1 Bunyu',
           theme_color: '#1e3a8a',
-          background_color: '#f8fafc',
+          background_color: '#1e3a8a',
           display: 'standalone',
+          orientation: 'portrait',
           icons: [
             {
               src: '/icon.svg',
-              sizes: '192x192 512x512',
+              sizes: 'any',
               type: 'image/svg+xml',
-              purpose: 'any maskable'
+              purpose: 'any'
+            },
+            {
+              src: '/icon.svg',
+              sizes: 'any',
+              type: 'image/svg+xml',
+              purpose: 'maskable'
             }
           ]
         }

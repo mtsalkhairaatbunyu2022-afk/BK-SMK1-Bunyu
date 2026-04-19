@@ -25,8 +25,8 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
               <span className="text-xs font-bold uppercase tracking-wider">Sistem Administrasi BK</span>
             </div>
             
-            <h1 className="text-5xl md:text-8xl font-black text-slate-900 leading-tight mb-12">
-              BK SMKN 1 <span className="text-blue-600 italic">BUNYU</span>
+            <h1 className="text-4xl md:text-7xl font-black text-slate-900 leading-tight mb-12">
+              KONSELOR SMK NEGERI 1 <span className="text-blue-600 italic">BUNYU</span>
             </h1>
             
             <button

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Student, StudentRecord } from '../types';
-import { Database, Search, Filter, Pencil, Trash2, AlertTriangle, Users, Calendar } from 'lucide-react';
+import { Database, Search, Filter, Pencil, Trash2, AlertTriangle, Users, Calendar, Check, X as CloseIcon } from 'lucide-react';
 
 interface BankDataProps {
   students: Student[];
@@ -13,6 +13,11 @@ export default function BankData({ students, records, setRecords, onNavigate }: 
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<'All' | 'Pelanggaran' | 'Bimbingan'>('All');
   const [tingkatFilter, setTingkatFilter] = useState<'All' | 'X' | 'XI' | 'XII' | 'XIII'>('All');
+  
+  // Modals state
+  const [editingRecord, setEditingRecord] = useState<StudentRecord | null>(null);
+  const [editNotes, setEditNotes] = useState('');
+  const [editDate, setEditDate] = useState('');
 
   const handleDelete = (id: string) => {
     if (confirm('Hapus data ini dari bank data?')) {
@@ -21,13 +26,15 @@ export default function BankData({ students, records, setRecords, onNavigate }: 
   };
 
   const handleEdit = (record: StudentRecord) => {
-    // Navigate to respective menu with edit intent
-    // For now, simple navigation works since the components already handle edit state if we pass it
-    // But since we can't easily pass state between components via simple onNavigate('view')
-    // and we don't have a global state for "recordBeingEdited"
-    // I will suggest just using the Edit button in the original menus
-    // OR we could implement a quick view/edit modal here
-    alert(`Silakan gunakan menu ${record.category} untuk melakukan pengeditan detail. Bank data digunakan untuk tinjauan dan penghapusan cepat.`);
+    setEditingRecord(record);
+    setEditNotes(record.notes);
+    setEditDate(record.date);
+  };
+
+  const saveEdit = () => {
+    if (!editingRecord) return;
+    setRecords(records.map(r => r.id === editingRecord.id ? { ...r, notes: editNotes, date: editDate } : r));
+    setEditingRecord(null);
   };
 
   const filteredRecords = records.filter(r => {
@@ -53,12 +60,6 @@ export default function BankData({ students, records, setRecords, onNavigate }: 
             </h2>
             <p className="text-slate-500 text-sm mt-1">Pusat kontrol seluruh catatan pelanggaran dan bimbingan siswa.</p>
           </div>
-          <button
-            onClick={() => onNavigate('welcome')}
-            className="px-6 py-2 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition-colors"
-          >
-            Tutup
-          </button>
         </div>
 
         {/* Filters */}
@@ -111,7 +112,7 @@ export default function BankData({ students, records, setRecords, onNavigate }: 
                   {record.category === 'Pelanggaran' ? <AlertTriangle size={24} /> : <Users size={24} />}
                 </div>
 
-                <div className="flex-1">
+                <div className="flex-1 w-full">
                   <div className="flex flex-wrap items-center gap-2 mb-2">
                     <span className="font-bold text-slate-900 text-lg">{record.studentNama}</span>
                     <span className="text-xs font-bold px-2 py-1 bg-white border border-slate-200 rounded-lg text-slate-500">
@@ -127,27 +128,60 @@ export default function BankData({ students, records, setRecords, onNavigate }: 
                     <span className="font-bold text-blue-600">KELAS {record.studentTingkat} • {record.studentJurusan}</span>
                   </div>
 
-                  <p className="text-slate-700 text-sm leading-relaxed whitespace-pre-wrap bg-white/50 p-4 rounded-xl border border-slate-100 italic">
-                    "{record.notes}"
-                  </p>
+                  {editingRecord?.id === record.id ? (
+                    <div className="space-y-3 bg-white p-4 rounded-xl border border-blue-200 mt-2">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 mb-1">Edit Tanggal</label>
+                        <input 
+                          type="date" 
+                          value={editDate}
+                          onChange={e => setEditDate(e.target.value)}
+                          className="w-full text-sm border-slate-300 rounded-lg"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 mb-1">Edit Catatan</label>
+                        <textarea 
+                          rows={3}
+                          value={editNotes}
+                          onChange={e => setEditNotes(e.target.value)}
+                          className="w-full text-sm border-slate-300 rounded-lg"
+                        />
+                      </div>
+                      <div className="flex space-x-2 pt-2">
+                        <button onClick={saveEdit} className="flex-1 bg-blue-600 text-white text-sm font-bold py-2 rounded-lg flex justify-center items-center">
+                          <Check size={16} className="mr-1" /> Simpan
+                        </button>
+                        <button onClick={() => setEditingRecord(null)} className="flex-1 bg-slate-100 text-slate-600 text-sm font-bold py-2 rounded-lg flex justify-center items-center">
+                          <CloseIcon size={16} className="mr-1" /> Batal
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="text-slate-700 text-sm leading-relaxed whitespace-pre-wrap bg-white/50 p-4 rounded-xl border border-slate-100 italic">
+                      "{record.notes}"
+                    </p>
+                  )}
                 </div>
 
-                <div className="flex md:flex-col gap-2 w-full md:w-auto">
-                  <button 
-                    onClick={() => handleEdit(record)}
-                    className="flex-1 md:flex-none p-3 text-blue-600 bg-white border border-blue-100 rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-sm"
-                    title="Edit via Menu Terkait"
-                  >
-                    <Pencil size={20} className="mx-auto" />
-                  </button>
-                  <button 
-                    onClick={() => handleDelete(record.id)}
-                    className="flex-1 md:flex-none p-3 text-red-600 bg-white border border-red-100 rounded-xl hover:bg-red-600 hover:text-white transition-all shadow-sm"
-                    title="Hapus Permanen"
-                  >
-                    <Trash2 size={20} className="mx-auto" />
-                  </button>
-                </div>
+                {!editingRecord || editingRecord.id !== record.id ? (
+                  <div className="flex md:flex-col gap-2 w-full md:w-auto mt-4 md:mt-0">
+                    <button 
+                      onClick={() => handleEdit(record)}
+                      className="flex-1 md:flex-none p-3 text-blue-600 bg-white border border-blue-100 rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-sm"
+                      title="Edit Catatan & Tanggal"
+                    >
+                      <Pencil size={20} className="mx-auto" />
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(record.id)}
+                      className="flex-1 md:flex-none p-3 text-red-600 bg-white border border-red-100 rounded-xl hover:bg-red-600 hover:text-white transition-all shadow-sm"
+                      title="Hapus Permanen"
+                    >
+                      <Trash2 size={20} className="mx-auto" />
+                    </button>
+                  </div>
+                ) : null}
               </div>
             ))}
           </div>

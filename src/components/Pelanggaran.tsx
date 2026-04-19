@@ -15,6 +15,7 @@ interface PelanggaranProps {
 export default function Pelanggaran({ students, records, setRecords, onNavigate }: PelanggaranProps) {
   const [activeTab, setActiveTab] = useState<'Ringan' | 'Sedang' | 'Berat'>('Ringan');
   const [selectedStudent, setSelectedStudent] = useState<string>('');
+  const [selectedClassFilter, setSelectedClassFilter] = useState<string>('');
   const [notes, setNotes] = useState('');
   const [date, setDate] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -25,13 +26,21 @@ export default function Pelanggaran({ students, records, setRecords, onNavigate 
     r => r.category === 'Pelanggaran' && r.subCategory === activeTab
   );
 
+  const uniqueClasses = Array.from(new Set(students.map(s => `${s.tingkat} ${s.jurusan}`))).sort(
+    (a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
+  );
+
+  const filteredStudentOptions = students.filter(
+    s => selectedClassFilter === '' || `${s.tingkat} ${s.jurusan}` === selectedClassFilter
+  );
+
   const handleSave = () => {
     if (!selectedStudent || !notes || !date) {
       alert('Mohon pilih siswa, isi catatan, dan tentukan tanggal.');
       return;
     }
 
-    const student = students.find(s => s.nomor === selectedStudent);
+    const student = students.find(s => s.id === selectedStudent);
     if (!student) return;
 
     if (editingId) {
@@ -69,7 +78,17 @@ export default function Pelanggaran({ students, records, setRecords, onNavigate 
 
   const handleEdit = (record: StudentRecord) => {
     setEditingId(record.id);
-    setSelectedStudent(record.studentNomor);
+    const matchingStudent = students.find(s => 
+      s.nomor === record.studentNomor && 
+      s.tingkat === record.studentTingkat && 
+      s.jurusan === record.studentJurusan
+    );
+    if (matchingStudent) {
+      setSelectedClassFilter(`${matchingStudent.tingkat} ${matchingStudent.jurusan}`);
+      setSelectedStudent(matchingStudent.id);
+    } else {
+      setSelectedStudent('');
+    }
     setNotes(record.notes);
     setDate(record.date);
   };
@@ -83,6 +102,7 @@ export default function Pelanggaran({ students, records, setRecords, onNavigate 
   const cancelEdit = () => {
     setEditingId(null);
     setSelectedStudent('');
+    setSelectedClassFilter('');
     setNotes('');
     setDate('');
   };
@@ -187,22 +207,42 @@ export default function Pelanggaran({ students, records, setRecords, onNavigate 
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Pilih Siswa</label>
-              <select 
-                value={selectedStudent}
-                onChange={(e) => setSelectedStudent(e.target.value)}
-                className="w-full rounded-lg border-slate-300 border p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-              >
-                <option value="">-- Pilih Siswa --</option>
-                {students.sort((a,b) => a.tingkat.localeCompare(b.tingkat)).map(s => (
-                  <option key={s.nomor} value={s.nomor}>[{s.tingkat}] {s.nama} ({s.jurusan})</option>
-                ))}
-              </select>
-              {students.length === 0 && (
-                <p className="text-xs text-amber-600 mt-1">Data siswa kosong. Silakan import di menu Data Siswa.</p>
-              )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Pilih Kelas</label>
+                <select 
+                  value={selectedClassFilter}
+                  onChange={(e) => {
+                    setSelectedClassFilter(e.target.value);
+                    setSelectedStudent('');
+                  }}
+                  className="w-full rounded-lg border-slate-300 border p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                >
+                  <option value="">-- Pilih Kelas --</option>
+                  {uniqueClasses.map(c => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Pilih Siswa</label>
+                <select 
+                  value={selectedStudent}
+                  onChange={(e) => setSelectedStudent(e.target.value)}
+                  className="w-full rounded-lg border-slate-300 border p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none disabled:bg-slate-100 disabled:cursor-not-allowed"
+                  disabled={!selectedClassFilter && uniqueClasses.length > 0}
+                >
+                  <option value="">-- Pilih Siswa --</option>
+                  {filteredStudentOptions.sort((a,b) => a.nama.localeCompare(b.nama)).map(s => (
+                    <option key={s.id} value={s.id}>{s.nama} (No: {s.nomor})</option>
+                  ))}
+                </select>
+              </div>
             </div>
+            {students.length === 0 && (
+              <p className="text-xs text-amber-600 mt-1">Data siswa kosong. Silakan import di menu Data Siswa.</p>
+            )}
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Catatan Pelanggaran</label>
@@ -215,22 +255,35 @@ export default function Pelanggaran({ students, records, setRecords, onNavigate 
               />
             </div>
 
-            <div className="flex space-x-3 pt-2">
+            <div className={`flex space-x-3 pt-2 ${!editingId && 'hidden'}`}>
               <button
-                onClick={editingId ? cancelEdit : () => onNavigate('welcome')}
+                onClick={cancelEdit}
                 className="flex-1 px-4 py-2.5 bg-slate-100 text-slate-700 font-medium rounded-lg hover:bg-slate-200 transition-colors"
               >
-                {editingId ? 'Batal' : 'Tutup'}
+                Batal
               </button>
               <button
                 onClick={handleSave}
                 disabled={!selectedStudent || !notes || !date}
                 className="flex-1 flex items-center justify-center px-4 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
               >
-                {editingId ? <Check size={18} className="mr-2" /> : <Save size={18} className="mr-2" />}
-                {editingId ? 'Update' : 'Simpan'}
+                <Check size={18} className="mr-2" />
+                Update
               </button>
             </div>
+
+            {!editingId && (
+              <div className="pt-2">
+                <button
+                  onClick={handleSave}
+                  disabled={!selectedStudent || !notes || !date}
+                  className="w-full flex items-center justify-center px-4 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+                >
+                  <Save size={18} className="mr-2" />
+                  Simpan ke Bank Data
+                </button>
+              </div>
+            )}
           </div>
         </div>
 

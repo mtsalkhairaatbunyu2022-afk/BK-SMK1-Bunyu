@@ -236,12 +236,6 @@ export default function DataSiswa({ students, setStudents, onNavigate, activeTin
           </div>
           
           <div className="flex space-x-3 items-end">
-            <button
-              onClick={() => onNavigate('welcome')}
-              className="inline-flex items-center px-4 py-2 bg-slate-100 text-slate-700 font-medium rounded-lg hover:bg-slate-200 transition-colors"
-            >
-              Tutup
-            </button>
             <input
               type="file"
               accept=".xlsx, .xls"
@@ -288,7 +282,7 @@ export default function DataSiswa({ students, setStudents, onNavigate, activeTin
               <table className="min-w-full divide-y divide-slate-200">
                 <thead className="bg-slate-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Nomor</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider w-16">No</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Nama Lengkap</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Jurusan</th>
                     <th className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">Aksi</th>
@@ -297,10 +291,10 @@ export default function DataSiswa({ students, setStudents, onNavigate, activeTin
                 <tbody className="bg-white divide-y divide-slate-200">
                   {filteredStudents.map((student) => (
                     <tr key={student.id} className="hover:bg-slate-50/50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                      <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-900 w-16">
                         {editingId === student.id ? (
                           <input 
-                            className="border rounded px-2 py-1 w-24"
+                            className="border rounded px-2 py-1 w-12"
                             value={editForm.nomor}
                             onChange={e => setEditForm({...editForm, nomor: e.target.value})}
                           />

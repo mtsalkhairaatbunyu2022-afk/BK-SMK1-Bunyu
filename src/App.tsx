@@ -42,15 +42,25 @@ export default function App() {
     localStorage.setItem('bk_records', JSON.stringify(records));
   }, [records]);
 
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
   const navigation = [
     { name: 'Data Siswa', id: 'data-siswa', icon: Database },
     { name: 'Pelanggaran', id: 'pelanggaran', icon: AlertTriangle },
     { name: 'Bimbingan', id: 'bimbingan', icon: Users },
     { name: 'Bank Data', id: 'bank-data', icon: Database },
-    { name: 'Tingkat Kelas', id: 'X', icon: LayoutDashboard }, // Default to Kelas X or a selection view
   ];
-
-  const tingkatMenu = ['X', 'XI', 'XII', 'XIII'];
 
   const renderContent = () => {
     switch (currentView) {
@@ -65,14 +75,6 @@ export default function App() {
       case 'bank-data':
         return <BankData students={students} records={records} setRecords={setRecords} onNavigate={setCurrentView} />;
       default:
-        if (tingkatMenu.includes(currentView)) {
-          return <DataSiswa 
-            students={students} 
-            setStudents={setStudents} 
-            onNavigate={setCurrentView} 
-            activeTingkat={currentView}
-          />;
-        }
         return <Dashboard onNavigate={setCurrentView} />;
     }
   };
@@ -96,15 +98,23 @@ export default function App() {
             <div className="bg-white p-1 rounded-lg">
               <LayoutDashboard className="text-blue-900" size={24} />
             </div>
-            <h1 className="text-xl font-bold tracking-tight">BK SMKN1 BUNYU</h1>
+            <h1 className="text-xl font-bold tracking-tight">KONSELOR SMK NEGERI 1 BUNYU</h1>
           </div>
           
-          <button 
-            className="md:hidden p-2 hover:bg-blue-800 rounded-lg transition-colors"
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          >
-            {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="flex items-center space-x-4">
+            {!isOnline && (
+              <div className="flex items-center bg-amber-500/20 text-amber-300 px-3 py-1 rounded-full text-xs font-bold border border-amber-500/30 animate-pulse">
+                <div className="w-2 h-2 bg-amber-500 rounded-full mr-2"></div>
+                MODA OFFLINE
+              </div>
+            )}
+            <button 
+              className="md:hidden p-2 hover:bg-blue-800 rounded-lg transition-colors"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            >
+              {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center space-x-1">
@@ -155,40 +165,26 @@ export default function App() {
           </div>
         )}
       </header>
-
-      {/* Sub-Header for Tingkat Kelas (only shown when relevant or as a second row) */}
-      <div className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center gap-4">
-          <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Akses Cepat Kelas:</span>
-          <div className="flex gap-2">
-            {tingkatMenu.map((t) => (
-              <button
-                key={t}
-                onClick={() => setCurrentView(t)}
-                className={`
-                  px-4 py-1.5 rounded-full text-xs font-bold transition-all border
-                  ${currentView === t 
-                    ? 'bg-blue-600 text-white border-blue-600 shadow-md transform scale-105' 
-                    : 'bg-white text-slate-600 border-slate-200 hover:border-blue-400 hover:text-blue-600'}
-                `}
-              >
-                KELAS {t}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
       
       {/* Main Content Area */}
       <main className="flex-1 overflow-auto p-4 md:p-8 bg-slate-50/50">
         <div className="max-w-7xl mx-auto">
+          <div className="flex justify-end mb-6">
+            <button
+              onClick={() => setCurrentView('welcome')}
+              className="flex items-center px-6 py-2.5 bg-white border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-red-600 hover:text-white hover:border-red-600 transition-all shadow-sm group"
+            >
+              <X size={20} className="mr-2 group-hover:rotate-90 transition-transform" />
+              TUTUP HALAMAN
+            </button>
+          </div>
           {renderContent()}
         </div>
       </main>
 
       {/* Footer Branding */}
       <footer className="py-4 text-center text-slate-400 text-xs border-t border-slate-200 bg-white">
-        &copy; {new Date().getFullYear()} BK SMKN 1 BUNYU • Sistem Administrasi Guru BK
+        &copy; {new Date().getFullYear()} KONSELOR SMK NEGERI 1 BUNYU • Sistem Administrasi Guru BK
       </footer>
     </div>
   );
