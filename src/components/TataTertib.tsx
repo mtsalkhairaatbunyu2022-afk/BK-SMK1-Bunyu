@@ -489,7 +489,7 @@ export default function TataTertib({ onNavigate }: TataTertibProps) {
             <h3 className="font-bold text-center mb-2">BAB X PELANGGARAN DAN SANKSI</h3>
             <p className="text-center font-semibold mb-4">Pasal 23</p>
             <p className="font-bold mb-4 text-center">Jenis Pelanggaran dan sanksi</p>
-            <ol className="list-decimal pl-6 space-y-2">
+            <ol className="list-decimal pl-6 space-y-2 mb-6">
               <li>Setiap siswa yang melakukan pelanggaran tata tertib yang berlaku akan diberikan sanksi sesuai ketentuan yang ada.</li>
               <li>Setiap pelanggaran yang dilakukan siswa dibukukan dalam buku pelanggaran.</li>
               <li>Mekanisme pemberian sanksi disesuaikan dengan jenis dan bobot pelanggaran yang dilakukan.</li>
@@ -498,16 +498,124 @@ export default function TataTertib({ onNavigate }: TataTertibProps) {
               <li>Pelanggaran kategori ringan di sekolah dapat diberi sanksi langsung oleh guru, wali kelas, pembina, staff kesiswaan, membersihkan lingkungan sekitar, push-up ringan, lari ringan, dipulangkan dan di alfa serta pelanggaran lain yang dianggap relevan.</li>
               <li>Pelanggaran sedang dan berat dilanjutkan dan diproses oleh Wali Kelas dengan Staff Kesiswaan, Guru Bimbingan Konseling dan Waka Kesiswaan untuk diberikan sanksi sesuai ketentuan yang berlaku.</li>
             </ol>
+
+            <div className="overflow-x-auto my-6 border border-slate-300 rounded-lg shadow-inner">
+              <table className="w-full text-[10px] md:text-xs border-collapse min-w-[600px]">
+                <thead className="bg-slate-100 font-bold uppercase sticky top-0">
+                  <tr>
+                    <th className="border border-slate-300 p-2 text-center w-8">NO</th>
+                    <th className="border border-slate-300 p-2 text-left">JENIS PELANGGARAN</th>
+                    <th className="border border-slate-300 p-2 text-left">SANKSI BERUPA</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="bg-blue-50 font-bold">
+                    <td className="border border-slate-300 p-2 text-center">A</td>
+                    <td colSpan={2} className="border border-slate-300 p-2">Pelanggaran Ringan</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 p-2 text-center">1</td>
+                    <td className="border border-slate-300 p-2">Tidak mengikuti kegiatan yang diprogramkan sekolah tanpa izin (upacara, kegiatan OSIS, ekstrakurikuler, kokurikuler dan kegiatan sejenisnya)</td>
+                    <td className="border border-slate-300 p-2">Diberi teguran dan pembinaan secara lisan</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 p-2 text-center">2</td>
+                    <td className="border border-slate-300 p-2">Tidak memakai seragam sesuai ketentuan yang berlaku (atribut, model pakaian, sepatu, jilbab dan sejenisnya)</td>
+                    <td className="border border-slate-300 p-2">Teguran secara lisan 2 kali dan dicatat, selebihnya pemanggilan orang tua. Atau jika sepatu tidak sesuai akan disita 1 minggu. Jika diulang lagi sita 2 minggu dst.</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 p-2 text-center">3</td>
+                    <td className="border border-slate-300 p-2">Tidak peduli terhadap lingkungan (membuang sampah sembarangan, membuang sampah di laci meja belajar, tidak menjaga kebersihan lingkungan dan perbuatan sejenisnya)</td>
+                    <td className="border border-slate-300 p-2">Diberi teguran lisan, membersihkan minimal lingkungan sekitar kelasnya.</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 p-2 text-center">4</td>
+                    <td className="border border-slate-300 p-2">Makan dan minum dalam ruang kelas (Kecuali air mineral sesuai izin guru)</td>
+                    <td className="border border-slate-300 p-2">Diberi teguran lisan dan melanjutkan makan dan minum di tengah lapangan</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 p-2 text-center">5</td>
+                    <td className="border border-slate-300 p-2">Berpenampilan tidak sesuai dengan ketentuan (pakaian tidak rapi, memakai aksesoris atau perhiasan, potongan rambut, dan penampilan sejenisnya)</td>
+                    <td className="border border-slate-300 p-2">Rambut dicukur di tempat kemudian untuk aksesoris disita dan tidak dikembalikan</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 p-2 text-center">6</td>
+                    <td className="border border-slate-300 p-2">Mengaktifkan Laptop, hand phone dan atau alat elektronik yang tidak sesuai dengan ketentuan serta digunakan untuk aktifitas negatif (diaktifkan dan digunakan saat proses pembelajaran, tanpa seijin guru)</td>
+                    <td className="border border-slate-300 p-2">Diberi teguran secara lisan serta alat elektronik yang digunakan disita selama 1 minggu</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 p-2 text-center">7</td>
+                    <td className="border border-slate-300 p-2">Mengotori dan mencoret coret fasilitas sekolah</td>
+                    <td className="border border-slate-300 p-2">Diberi teguran secara lisan kemudian mengembalikan fasilitas sekolah seperti kondisi semula atau mengganti fasilitas dengan unit yang baru</td>
+                  </tr>
+                  
+                  <tr className="bg-amber-50 font-bold">
+                    <td className="border border-slate-300 p-2 text-center">B</td>
+                    <td colSpan={2} className="border border-slate-300 p-2">Pelanggaran Sedang</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 p-2 text-center">1</td>
+                    <td className="border border-slate-300 p-2">Merusakkan dan/atau menghilangkan sarana sekolah</td>
+                    <td className="border border-slate-300 p-2">Mengganti sarana sekolah dengan yang baru serta mendapat SP 1 dengan durasi 3 bulan.</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 p-2 text-center">2</td>
+                    <td className="border border-slate-300 p-2">Merokok, bertindik, keluar masuk lingkungan sekolah tanpa melalui pintu gerbang atau lompat pagar, dan pelanggaran sejenisnya.</td>
+                    <td className="border border-slate-300 p-2">Pemanggilan orang tua, pembinaan dari BK/Wali Kelas/Kesiswaan kemudian diberikan SP 1 dengan durasi 3 bulan.</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 p-2 text-center">3</td>
+                    <td className="border border-slate-300 p-2">Bergaul dengan lawan jenis berlebihan (berduaan di lingkungan sekolah) dan melakukan perundungan menyangkut unsur SARA</td>
+                    <td className="border border-slate-300 p-2">Pemanggilan orang tua, pembinaan dari BK/Wali Kelas/Kesiswaan, diberikan SP 1 dengan durasi 3 bulan.</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 p-2 text-center">4</td>
+                    <td className="border border-slate-300 p-2">Mengulangi pelanggaran tingkat sedang dalam masa SP 1</td>
+                    <td className="border border-slate-300 p-2">Mendapat SP 2 dengan durasi 6 bulan</td>
+                  </tr>
+
+                  <tr className="bg-red-50 font-bold">
+                    <td className="border border-slate-300 p-2 text-center">C</td>
+                    <td colSpan={2} className="border border-slate-300 p-2">Pelanggaran Berat</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 p-2 text-center">1</td>
+                    <td className="border border-slate-300 p-2">Memalsukan dokumen resmi (tanda tangan, piagam dan sejenisnya) sehingga menyebabkan pencemaran nama baik sekolah dan/atau kerugian materil sekolah</td>
+                    <td className="border border-slate-300 p-2">Pemanggilan orang tua, pembinaan oleh BK/Kesiswaan dan diberikan SP 2 selama 6 bulan</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 p-2 text-center">2</td>
+                    <td className="border border-slate-300 p-2">Membawa, memakai dan atau Mengedarkan dan menyimpan file film porno, buku porno, senjata tajam atau senjata api, mencuri, memeras orang lain, berjudi, berkelahi, melakukan kekerasan fisik dan psikis dan pelanggaran sejenisnya</td>
+                    <td className="border border-slate-300 p-2">Pemanggilan orang tua, pembinaan oleh BK/Kesiswaan dan diberikan SP 2 selama 6 bulan.</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 p-2 text-center">3</td>
+                    <td className="border border-slate-300 p-2">Menghina, mengancam, menganiaya guru, karyawan atau kepala sekolah.</td>
+                    <td className="border border-slate-300 p-2">Pemanggilan orang tua, pembinaan oleh BK/Kesiswaan dan diberikan SP 2 selama 6 bulan.</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 p-2 text-center">4</td>
+                    <td className="border border-slate-300 p-2">Membawa, memakai dan atau Mengedarkan narkoba, melakukan pelecehan seksual, hamil, menikah dan perbuatan amoral (berciuman, berpelukan, bermesraan, berhubungan seksual dengan lawan jenis kelamin/sesame jenis).</td>
+                    <td className="border border-slate-300 p-2">Mendapat SP 3 diberikan surat mutasi (pindah sekolah)/tidak naik kelas (untuk yang kelas 12 penundaan kelulusan selama 1 tahun).</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-300 p-2 text-center">5</td>
+                    <td className="border border-slate-300 p-2">Melakukan pelanggaran tingkat sedang maupun berat dalam masa SP 2.</td>
+                    <td className="border border-slate-300 p-2">Mendapat SP 3 diberikan surat mutasi (pindah sekolah)/tidak naik kelas (untuk yang kelas 12 penundaan kelulusan selama 1 tahun).</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
           <div>
-            <p className="font-bold text-center mb-4">Pemberian SURAT PERINGATAN (SP)</p>
-            <ol className="list-decimal pl-6 space-y-2">
+            <p className="font-bold text-center mb-4">9. Pemberian SURAT PERINGATAN (SP)</p>
+            <ol className="list-[lower-alpha] pl-6 space-y-2">
               <li>Melakukan pelanggaran ringan berkali-kali, kemudian atas rekomendasi wali kelas, diberikan SP 1.</li>
               <li>Melakukan pelanggaran sedang, diberikan SP 1.</li>
-              <li>Status SP 1 akan tetap melekat pada siswa selama 3 bulan sejak SP 1 diberikan, dan apabila melakukan pelanggaran baik sedang maupun berat lagi akan diberikan SP tingkat selanjutnya.</li>
+              <li>Status  SP  1  akan  tetap  melekat  pada  siswa  selama  3 bulan sejak SP 1 diberikan, dan apabila melakukan pelanggaran baik sedang maupun berat lagi akan diberikan SP tingkat selanjutnya.</li>
               <li>Melakukan pelanggaran berat, diberikan SP 2 dengan waktu 6 bulan sejak diberikan atau SP 3 sesuai dengan dan ketentuan yang berlaku.</li>
-              <li>Tingkatan SP 1 dan SP 2 berlaku hanya selama waktu yang ditentukan yaitu 3 bulan dan 6 bulan.</li>
+              <li>Tingkatan SP 1 dan SP 2 berlaku hanya selama waktu yang ditentukan yaitu 3 bulan dan 6 bulan. </li>
               <li>Siswa yang mendapat SP 3 diberikan surat mutasi (pindah sekolah)/tidak naik kelas (untuk yang kelas 12 penundaan kelulusan selama 1 tahun).</li>
             </ol>
           </div>

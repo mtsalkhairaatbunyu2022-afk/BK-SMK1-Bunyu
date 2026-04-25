@@ -44,6 +44,51 @@ export default function SchoolProfile({ onNavigate }: SchoolProfileProps) {
     alert('Informasi kepala sekolah disimpan!');
   };
 
+  const exportAllData = () => {
+    const data = {
+      students: localStorage.getItem('bk_students'),
+      records: localStorage.getItem('bk_records'),
+      school_logo: localStorage.getItem('school_logo'),
+      principal_signature: localStorage.getItem('principal_signature'),
+      principal_name: localStorage.getItem('principal_name'),
+      principal_nip: localStorage.getItem('principal_nip')
+    };
+    
+    const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `backup_bk_konselor_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const importAllData = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (confirm('PERINGATAN: Mengimpor data akan MENGHAPUS data yang ada sekarang di perangkat ini. Lanjutkan?')) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const data = JSON.parse(event.target?.result as string);
+          if (data.students) localStorage.setItem('bk_students', data.students);
+          if (data.records) localStorage.setItem('bk_records', data.records);
+          if (data.school_logo) localStorage.setItem('school_logo', data.school_logo);
+          if (data.principal_signature) localStorage.setItem('principal_signature', data.principal_signature);
+          if (data.principal_name) localStorage.setItem('principal_name', data.principal_name);
+          if (data.principal_nip) localStorage.setItem('principal_nip', data.principal_nip);
+          
+          alert('Data berhasil diimpor! Aplikasi akan memuat ulang.');
+          window.location.reload();
+        } catch (err) {
+          alert('Gagal mengimpor data. Pastikan file benar.');
+        }
+      };
+      reader.readAsText(file);
+    }
+  };
+
   const removeLogo = () => {
     setLogo(null);
     localStorage.removeItem('school_logo');
@@ -182,6 +227,34 @@ export default function SchoolProfile({ onNavigate }: SchoolProfileProps) {
         >
           SIMPAN DATA KEPALA SEKOLAH
         </button>
+      </div>
+
+      {/* Backup & Restore Section */}
+      <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
+        <div className="flex items-center space-x-2 mb-6 text-blue-900 border-b pb-2">
+          <Download size={20} />
+          <h3 className="font-black uppercase">Pindahkan Data (Laptop ↔ HP)</h3>
+        </div>
+        
+        <p className="text-sm text-slate-600 mb-6">
+          Gunakan fitur ini untuk memindahkan semua data (Daftar Siswa, Catatan, Logo, TTD) antar perangkat.
+        </p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <button 
+            onClick={exportAllData}
+            className="flex items-center justify-center space-x-3 bg-emerald-600 hover:bg-emerald-700 text-white p-4 rounded-xl font-bold transition-all shadow-lg active:scale-95"
+          >
+            <Download size={20} />
+            <span>DOWNLOAD BACKUP DATA</span>
+          </button>
+          
+          <label className="cursor-pointer flex items-center justify-center space-x-3 bg-amber-600 hover:bg-amber-700 text-white p-4 rounded-xl font-bold transition-all shadow-lg active:scale-95">
+            <Upload size={20} />
+            <span>PULIHKAN / IMPORT DATA</span>
+            <input type="file" className="hidden" accept=".json" onChange={importAllData} />
+          </label>
+        </div>
       </div>
 
       <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-xl">

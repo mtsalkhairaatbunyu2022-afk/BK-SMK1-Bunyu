@@ -1,67 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
-    <!-- Premium Gradients -->
-    <linearGradient id="shieldBg" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#f0f9ff" />
-      <stop offset="100%" stop-color="#bae6fd" />
+    <!-- Colors from the logo -->
+    <linearGradient id="yellowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700" />
+      <stop offset="100%" stop-color="#FFB300" />
     </linearGradient>
-    <linearGradient id="premiumDarkBlue" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1e3a8a" />
-      <stop offset="100%" stop-color="#172554" />
-    </linearGradient>
-    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fbbf24" />
-      <stop offset="50%" stop-color="#f59e0b" />
-      <stop offset="100%" stop-color="#d97706" />
-    </linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="12" />
-      <feOffset dx="0" dy="8" result="offsetblur" />
-      <feComponentTransfer>
-        <feFuncA type="linear" slope="0.4" />
-      </feComponentTransfer>
-      <feMerge>
-        <feMergeNode />
-        <feMergeNode in="SourceGraphic" />
-      </feMerge>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
     </filter>
   </defs>
 
-  <!-- Maskable background -->
-  <rect width="512" height="512" fill="#1e3a8a" />
+  <!-- Blue background circle -->
+  <circle cx="256" cy="256" r="230" fill="#3D85C6" stroke="#FFD700" stroke-width="12" />
+  
+  <!-- The Yellow Outer Ring/Curve -->
+  <path d="M440 256 A184 184 0 1 0 72 256 A184 184 0 0 0 440 256" fill="none" stroke="#FFD700" stroke-width="60" />
+  
+  <!-- Left Side thick curve -->
+  <path d="M256 72 A184 184 0 0 0 72 256 A184 184 0 0 0 256 440" fill="none" stroke="#FFD700" stroke-width="85" stroke-linecap="round" />
 
-  <!-- The Badge Group -->
-  <g filter="url(#shadow)" transform="translate(256, 256) scale(0.95)">
-    <!-- Main Perisai Body -->
-    <path d="M0 -220 L-180 -150 V0 C-180 140 0 220 0 220 C0 220 180 140 180 0 V-150 L0 -220" fill="url(#shieldBg)" stroke="url(#goldGrad)" stroke-width="12" />
-    
-    <!-- Top Header Banner -->
-    <path d="M-175 -148 L0 -216 L175 -148 V-80 H-175 Z" fill="url(#premiumDarkBlue)" />
-    <text y="-180" font-family="sans-serif" font-weight="bold" font-size="20" fill="#fbbf24" text-anchor="middle">SEKOLAH MENENGAH KEJURUAN</text>
-    <text y="-115" font-family="sans-serif" font-weight="900" font-size="28" fill="#ffffff" text-anchor="middle">SMK NEGERI 1 BUNYU</text>
+  <!-- Vertical bar with small circle -->
+  <rect x="236" y="100" width="40" height="340" fill="#FFD700" />
+  <circle cx="256" cy="180" r="70" fill="none" stroke="#FFD700" stroke-width="35" />
 
-    <!-- Gear Element (Simplified for Clarity) -->
-    <circle r="90" fill="white" stroke="#334155" stroke-width="2" />
-    <g opacity="0.9">
-      <path d="M-90 0 A90 90 0 0 1 0 -90 L0 0 Z" fill="#ef4444" />
-      <path d="M0 -90 A90 90 0 0 1 90 0 L0 0 Z" fill="#3b82f6" />
-      <path d="M90 0 A90 90 0 0 1 0 90 L0 0 Z" fill="#10b981" />
-      <path d="M0 90 A90 90 0 0 1 -90 0 L0 0 Z" fill="#f59e0b" />
-    </g>
-    
-    <!-- Central Tools Circle -->
-    <circle r="40" fill="#ffffff" stroke="url(#goldGrad)" stroke-width="3" />
-    <path d="M0 -25 C-12 -10 -15 5 0 25 C15 5 12 -10 0 -25" fill="#334155" /> 
+  <!-- Bottom "KONSELOR" base -->
+  <rect x="250" y="400" width="220" height="60" fill="#FFD700" rx="5" />
+  <text x="360" y="445" font-family="Arial, sans-serif" font-weight="900" font-size="34" fill="#3D85C6" text-anchor="middle" letter-spacing="-1">KONSELOR</text>
 
-    <!-- Bottom Book -->
-    <path d="M-40 140 Q0 150 40 140 V165 Q0 175 -40 165 Z" fill="#ffffff" stroke="#334155" stroke-width="2" />
-
-    <!-- Text Ribbon -->
-    <path d="M-140 170 L0 195 L140 170 V205 L0 230 L-140 205 Z" fill="#ef4444" stroke="#7f1d1d" stroke-width="1" />
-    <text y="205" font-family="sans-serif" font-weight="bold" font-size="16" fill="white" text-anchor="middle">KALIMANTAN UTARA</text>
-    
-    <!-- Year markers -->
-    <text x="-125" y="190" font-family="sans-serif" font-weight="bold" font-size="10" fill="white">20</text>
-    <text x="110" y="190" font-family="sans-serif" font-weight="bold" font-size="10" fill="white">15</text>
-  </g>
+  <!-- Shadow/Border to give depth -->
+  <circle cx="256" cy="256" r="230" fill="none" stroke="#333" stroke-width="2" opacity="0.2" />
 </svg>
