@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Student, StudentRecord } from '../types';
-import { Database, Search, Filter, Pencil, Trash2, AlertTriangle, Users, Calendar, Check, X as CloseIcon } from 'lucide-react';
+import { Database, Search, Filter, Pencil, Trash2, AlertTriangle, Users, Calendar, Check, Printer, X as CloseIcon } from 'lucide-react';
+import ReportView from './ReportView';
 
 interface BankDataProps {
   students: Student[];
@@ -18,6 +19,8 @@ export default function BankData({ students, records, setRecords, onNavigate }: 
   const [editingRecord, setEditingRecord] = useState<StudentRecord | null>(null);
   const [editNotes, setEditNotes] = useState('');
   const [editDate, setEditDate] = useState('');
+  
+  const [showReport, setShowReport] = useState(false);
 
   const handleDelete = (id: string) => {
     if (confirm('Hapus data ini dari bank data?')) {
@@ -52,7 +55,7 @@ export default function BankData({ students, records, setRecords, onNavigate }: 
   return (
     <div className="space-y-6">
       <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b pb-6">
           <div>
             <h2 className="text-2xl font-bold text-slate-900 flex items-center">
               <Database className="mr-3 text-blue-600" size={28} />
@@ -60,6 +63,13 @@ export default function BankData({ students, records, setRecords, onNavigate }: 
             </h2>
             <p className="text-slate-500 text-sm mt-1">Pusat kontrol seluruh catatan pelanggaran dan bimbingan siswa.</p>
           </div>
+          <button 
+            onClick={() => setShowReport(true)}
+            className="bg-slate-800 hover:bg-slate-900 text-white px-6 py-3 rounded-xl font-bold flex items-center space-x-2 transition-all shadow-lg shadow-slate-200 active:scale-95"
+          >
+            <Printer size={20} />
+            <span>CETAK LAPORAN</span>
+          </button>
         </div>
 
         {/* Filters */}
@@ -208,6 +218,13 @@ export default function BankData({ students, records, setRecords, onNavigate }: 
           </div>
         </div>
       </div>
+      {/* Report Modal */}
+      {showReport && (
+        <ReportView 
+          records={filteredRecords} 
+          onClose={() => setShowReport(false)} 
+        />
+      )}
     </div>
   );
 }

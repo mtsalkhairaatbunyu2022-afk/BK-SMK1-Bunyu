@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Student, StudentRecord } from '../types';
-import { Plus, Save, Download, FileText, Trash2, Pencil, Check, X as CloseIcon } from 'lucide-react';
+import { Plus, Save, Download, FileText, Trash2, Pencil, Check, Printer, X as CloseIcon } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType } from 'docx';
 import { saveAs } from 'file-saver';
+import ReportView from './ReportView';
 
 interface PelanggaranProps {
   students: Student[];
@@ -19,6 +20,7 @@ export default function Pelanggaran({ students, records, setRecords, onNavigate 
   const [notes, setNotes] = useState('');
   const [date, setDate] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [showReport, setShowReport] = useState(false);
 
   const tabs = ['Ringan', 'Sedang', 'Berat'] as const;
 
@@ -295,6 +297,14 @@ export default function Pelanggaran({ students, records, setRecords, onNavigate 
             </h3>
             <div className="flex space-x-2">
               <button
+                onClick={() => setShowReport(true)}
+                disabled={filteredRecords.length === 0}
+                className="inline-flex items-center px-3 py-1.5 bg-slate-100 text-slate-700 text-sm font-bold rounded-lg hover:bg-slate-200 transition-colors disabled:opacity-50"
+              >
+                <Printer size={16} className="mr-1.5" />
+                Cetak
+              </button>
+              <button
                 onClick={exportToExcel}
                 disabled={filteredRecords.length === 0}
                 className="inline-flex items-center px-3 py-1.5 bg-emerald-50 text-emerald-700 text-sm font-medium rounded-lg hover:bg-emerald-100 transition-colors disabled:opacity-50"
@@ -353,6 +363,13 @@ export default function Pelanggaran({ students, records, setRecords, onNavigate 
           )}
         </div>
       </div>
+
+      {showReport && (
+        <ReportView 
+          records={filteredRecords} 
+          onClose={() => setShowReport(false)} 
+        />
+      )}
     </div>
   );
 }

@@ -9,6 +9,8 @@ import {
   AlertTriangle, 
   Users, 
   Database,
+  BookOpen,
+  Building,
   Menu,
   X
 } from 'lucide-react';
@@ -17,6 +19,8 @@ import DataSiswa from './components/DataSiswa';
 import Pelanggaran from './components/Pelanggaran';
 import Bimbingan from './components/Bimbingan';
 import BankData from './components/BankData';
+import TataTertib from './components/TataTertib';
+import SchoolProfile from './components/SchoolProfile';
 import { Student, StudentRecord } from './types';
 
 export default function App() {
@@ -60,6 +64,8 @@ export default function App() {
     { name: 'Pelanggaran', id: 'pelanggaran', icon: AlertTriangle },
     { name: 'Bimbingan', id: 'bimbingan', icon: Users },
     { name: 'Bank Data', id: 'bank-data', icon: Database },
+    { name: 'Tata Tertib', id: 'tata-tertib', icon: BookOpen },
+    { name: 'Profil Sekolah', id: 'school-profile', icon: Building },
   ];
 
   const renderContent = () => {
@@ -74,6 +80,10 @@ export default function App() {
         return <Bimbingan students={students} records={records} setRecords={setRecords} onNavigate={setCurrentView} />;
       case 'bank-data':
         return <BankData students={students} records={records} setRecords={setRecords} onNavigate={setCurrentView} />;
+      case 'tata-tertib':
+        return <TataTertib onNavigate={setCurrentView} />;
+      case 'school-profile':
+        return <SchoolProfile onNavigate={setCurrentView} />;
       default:
         return <Dashboard onNavigate={setCurrentView} />;
     }
