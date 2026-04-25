@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowLeft, BookOpen } from 'lucide-react';
 
@@ -6,10 +7,26 @@ interface TataTertibProps {
 }
 
 export default function TataTertib({ onNavigate }: TataTertibProps) {
-  const logo = localStorage.getItem('school_logo');
-  const signature = localStorage.getItem('principal_signature');
-  const principalName = localStorage.getItem('principal_name') || '...............................';
-  const principalNip = localStorage.getItem('principal_nip') || 'NIP. .........................';
+  const [logo, setLogo] = useState<string | null>(() => {
+    try {
+      return localStorage.getItem('school_logo');
+    } catch { return null; }
+  });
+  const [signature, setSignature] = useState<string | null>(() => {
+    try {
+      return localStorage.getItem('principal_signature');
+    } catch { return null; }
+  });
+  const [principalName, setPrincipalName] = useState(() => {
+    try {
+      return localStorage.getItem('principal_name') || '...............................';
+    } catch { return '...............................'; }
+  });
+  const [principalNip, setPrincipalNip] = useState(() => {
+    try {
+      return localStorage.getItem('principal_nip') || 'NIP. .........................';
+    } catch { return 'NIP. .........................'; }
+  });
 
   return (
     <motion.div 

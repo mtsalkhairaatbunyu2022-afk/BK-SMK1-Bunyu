@@ -21,21 +21,34 @@ import Bimbingan from './components/Bimbingan';
 import BankData from './components/BankData';
 import TataTertib from './components/TataTertib';
 import SchoolProfile from './components/SchoolProfile';
+import BackupRestore from './components/BackupRestore';
 import { Student, StudentRecord } from './types';
 
 export default function App() {
   const [currentView, setCurrentView] = useState('welcome');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
-  // Initialize state from localStorage (Bank Data)
+  // Initialize state from localStorage (Bank Data) with safety checks
   const [students, setStudents] = useState<Student[]>(() => {
-    const saved = localStorage.getItem('bk_students');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem('bk_students');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      console.error("Failed to parse students from localStorage", e);
+      return [];
+    }
   });
   const [records, setRecords] = useState<StudentRecord[]>(() => {
-    const saved = localStorage.getItem('bk_records');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem('bk_records');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      console.error("Failed to parse records from localStorage", e);
+      return [];
+    }
   });
+
+  const APP_VERSION = "1.0.5"; // Increment this to track updates
 
   // Save to localStorage whenever data changes
   useEffect(() => {
@@ -65,6 +78,7 @@ export default function App() {
     { name: 'Bimbingan', id: 'bimbingan', icon: Users },
     { name: 'Bank Data', id: 'bank-data', icon: Database },
     { name: 'Tata Tertib', id: 'tata-tertib', icon: BookOpen },
+    { name: 'Manajemen Data', id: 'backup-restore', icon: Database },
     { name: 'Profil Sekolah', id: 'school-profile', icon: Building },
   ];
 
@@ -82,6 +96,8 @@ export default function App() {
         return <BankData students={students} records={records} setRecords={setRecords} onNavigate={setCurrentView} />;
       case 'tata-tertib':
         return <TataTertib onNavigate={setCurrentView} />;
+      case 'backup-restore':
+        return <BackupRestore onNavigate={setCurrentView} />;
       case 'school-profile':
         return <SchoolProfile onNavigate={setCurrentView} />;
       default:
@@ -193,8 +209,8 @@ export default function App() {
       </main>
 
       {/* Footer Branding */}
-      <footer className="py-4 text-center text-slate-400 text-xs border-t border-slate-200 bg-white">
-        &copy; {new Date().getFullYear()} KONSELOR SMK NEGERI 1 BUNYU • Sistem Administrasi Guru BK
+      <footer className="py-4 text-center text-slate-400 text-[10px] border-t border-slate-200 bg-white">
+        &copy; {new Date().getFullYear()} KONSELOR SMK NEGERI 1 BUNYU • v{APP_VERSION} • Sistem Administrasi Guru BK
       </footer>
     </div>
   );

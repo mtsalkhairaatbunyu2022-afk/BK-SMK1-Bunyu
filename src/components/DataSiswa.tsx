@@ -1,11 +1,11 @@
-import { useState, useRef, ChangeEvent, useEffect } from 'react';
+import { useState, useRef, ChangeEvent, useEffect, Dispatch, SetStateAction } from 'react';
 import { Upload, FileSpreadsheet, Trash2, Pencil, Check, X as CloseIcon } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { Student } from '../types';
 
 interface DataSiswaProps {
   students: Student[];
-  setStudents: (students: Student[]) => void;
+  setStudents: Dispatch<SetStateAction<Student[]>>;
   onNavigate: (view: string) => void;
   activeTingkat?: string;
 }

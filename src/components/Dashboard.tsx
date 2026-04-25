@@ -1,4 +1,5 @@
-import { ArrowRight, BookOpen } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowRight, BookOpen, Database } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface DashboardProps {
@@ -6,7 +7,11 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ onNavigate }: DashboardProps) {
-  const customLogo = localStorage.getItem('school_logo');
+  const [customLogo, setCustomLogo] = useState<string | null>(() => {
+    try {
+      return localStorage.getItem('school_logo');
+    } catch { return null; }
+  });
   
   return (
     <div className="min-h-[80vh] flex flex-col justify-center py-12 px-4">
@@ -47,10 +52,18 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
 
               <button
                 onClick={() => onNavigate('tata-tertib')}
-                className="inline-flex items-center justify-center p-4 text-blue-600 font-bold hover:text-blue-800 transition-colors"
+                className="inline-flex items-center justify-center p-2 text-blue-600 font-bold hover:text-blue-800 transition-colors"
               >
                 <BookOpen size={20} className="mr-2" />
                 LIHAT TATA TERTIB SEKOLAH
+              </button>
+
+              <button
+                onClick={() => onNavigate('backup-restore')}
+                className="inline-flex items-center justify-center p-2 text-slate-500 font-bold hover:text-blue-600 transition-colors"
+              >
+                <Database size={20} className="mr-2" />
+                MANAJEMEN & BACKUP DATA
               </button>
             </div>
           </motion.div>

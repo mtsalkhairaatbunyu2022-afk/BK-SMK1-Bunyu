@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, Dispatch, SetStateAction } from 'react';
 import { Student, StudentRecord } from '../types';
 import { Database, Search, Filter, Pencil, Trash2, AlertTriangle, Users, Calendar, Check, Printer, X as CloseIcon } from 'lucide-react';
 import ReportView from './ReportView';
@@ -6,7 +6,7 @@ import ReportView from './ReportView';
 interface BankDataProps {
   students: Student[];
   records: StudentRecord[];
-  setRecords: (records: StudentRecord[]) => void;
+  setRecords: Dispatch<SetStateAction<StudentRecord[]>>;
   onNavigate: (view: string) => void;
 }
 

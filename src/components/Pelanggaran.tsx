@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, Dispatch, SetStateAction } from 'react';
 import { Student, StudentRecord } from '../types';
 import { Plus, Save, Download, FileText, Trash2, Pencil, Check, Printer, X as CloseIcon } from 'lucide-react';
 import * as XLSX from 'xlsx';
@@ -9,7 +9,7 @@ import ReportView from './ReportView';
 interface PelanggaranProps {
   students: Student[];
   records: StudentRecord[];
-  setRecords: (records: StudentRecord[]) => void;
+  setRecords: Dispatch<SetStateAction<StudentRecord[]>>;
   onNavigate: (view: string) => void;
 }
 
