@@ -76,7 +76,8 @@ export default function ReportView({ records, onClose }: ReportViewProps) {
                 <th className="border border-slate-400 p-2 text-center">Kelas / Jurusan</th>
                 <th className="border border-slate-400 p-2 text-center">Tanggal</th>
                 <th className="border border-slate-400 p-2 text-left">Kategori - Uraian</th>
-                <th className="border border-slate-400 p-2 text-left">Catatan / Tindak Lanjut</th>
+                <th className="border border-slate-400 p-2 text-left">Catatan</th>
+                <th className="border border-slate-400 p-2 text-left">Penanganan / Pelaksanaan</th>
               </tr>
             </thead>
             <tbody>
@@ -98,11 +99,14 @@ export default function ReportView({ records, onClose }: ReportViewProps) {
                   <td className="border border-slate-400 p-2 italic leading-relaxed text-[11px]">
                     "{r.notes}"
                   </td>
+                  <td className="border border-slate-400 p-2 font-bold text-[11px] text-blue-900">
+                    {r.handlingMethod || '-'}
+                  </td>
                 </tr>
               ))}
               {records.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="border border-slate-400 p-8 text-center text-slate-400 italic">Tidak ada data untuk dicetak</td>
+                  <td colSpan={7} className="border border-slate-400 p-8 text-center text-slate-400 italic">Tidak ada data untuk dicetak</td>
                 </tr>
               )}
             </tbody>

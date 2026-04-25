@@ -18,6 +18,7 @@ export default function Bimbingan({ students, records, setRecords, onNavigate }:
   const [selectedStudent, setSelectedStudent] = useState<string>('');
   const [selectedClassFilter, setSelectedClassFilter] = useState<string>('');
   const [notes, setNotes] = useState('');
+  const [handlingMethod, setHandlingMethod] = useState('');
   const [date, setDate] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showReport, setShowReport] = useState(false);
@@ -53,7 +54,8 @@ export default function Bimbingan({ students, records, setRecords, onNavigate }:
         studentJurusan: student.jurusan,
         studentTingkat: student.tingkat,
         date,
-        notes
+        notes,
+        handlingMethod
       } : r));
       setEditingId(null);
       alert('Data berhasil diperbarui!');
@@ -67,13 +69,15 @@ export default function Bimbingan({ students, records, setRecords, onNavigate }:
         category: 'Bimbingan',
         subCategory: activeTab,
         date,
-        notes
+        notes,
+        handlingMethod
       };
       setRecords([...records, newRecord]);
       alert('Data berhasil disimpan ke Bank Data!');
     }
 
     setNotes('');
+    setHandlingMethod('');
     setSelectedStudent('');
     setDate('');
   };
@@ -92,6 +96,7 @@ export default function Bimbingan({ students, records, setRecords, onNavigate }:
       setSelectedStudent('');
     }
     setNotes(record.notes);
+    setHandlingMethod(record.handlingMethod || '');
     setDate(record.date);
   };
 
@@ -106,6 +111,7 @@ export default function Bimbingan({ students, records, setRecords, onNavigate }:
     setSelectedStudent('');
     setSelectedClassFilter('');
     setNotes('');
+    setHandlingMethod('');
     setDate('');
   };
 
@@ -117,7 +123,8 @@ export default function Bimbingan({ students, records, setRecords, onNavigate }:
       'Nama Siswa': r.studentNama,
       'Jurusan': r.studentJurusan,
       'Jenis Bimbingan': r.subCategory,
-      'Catatan Bimbingan': r.notes
+      'Catatan Bimbingan': r.notes,
+      'Metode Penanganan': r.handlingMethod || '-'
     }));
 
     const ws = XLSX.utils.json_to_sheet(dataToExport);
@@ -135,6 +142,7 @@ export default function Bimbingan({ students, records, setRecords, onNavigate }:
           new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: "Nama Siswa", bold: true })] })] }),
           new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: "Jurusan", bold: true })] })] }),
           new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: "Catatan", bold: true })] })] }),
+          new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: "Penanganan", bold: true })] })] }),
         ],
       }),
       ...filteredRecords.map(r => new TableRow({
@@ -144,6 +152,7 @@ export default function Bimbingan({ students, records, setRecords, onNavigate }:
           new TableCell({ children: [new Paragraph(r.studentNama)] }),
           new TableCell({ children: [new Paragraph(r.studentJurusan)] }),
           new TableCell({ children: [new Paragraph(r.notes)] }),
+          new TableCell({ children: [new Paragraph(r.handlingMethod || '-')] }),
         ]
       }))
     ];
@@ -249,12 +258,37 @@ export default function Bimbingan({ students, records, setRecords, onNavigate }:
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Catatan Bimbingan</label>
               <textarea 
-                rows={4}
+                rows={3}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Tulis detail bimbingan..."
                 className="w-full rounded-lg border-slate-300 border p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Metode Penanganan / Pelaksanaan</label>
+              <select
+                value={handlingMethod}
+                onChange={(e) => setHandlingMethod(e.target.value)}
+                className="w-full rounded-lg border-slate-300 border p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none mb-1"
+              >
+                <option value="">-- Pilih Metode Pelaksanaan --</option>
+                <option value="Ruang BK / Konseling Individu">Ruang BK / Konseling Individu</option>
+                <option value="Klasikal / Konseling Kelompok">Klasikal / Konseling Kelompok</option>
+                <option value="Secara Kekeluargaan">Secara Kekeluargaan</option>
+                <option value="Pemanggilan Orang Tua / Wali">Pemanggilan Orang Tua / Wali</option>
+                <option value="Kunjungan ke Rumah (Home Visit)">Kunjungan ke Rumah (Home Visit)</option>
+                <option value="Lainnya">Lainnya...</option>
+              </select>
+              {handlingMethod === "Lainnya" && (
+                <input
+                  type="text"
+                  placeholder="Ketik metode pelaksanaan lainnya..."
+                  onChange={(e) => setHandlingMethod(e.target.value)}
+                  className="w-full rounded-lg border-slate-300 border p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none mt-2"
+                />
+              )}
             </div>
 
             <div className={`flex space-x-3 pt-2 ${!editingId && 'hidden'}`}>
@@ -353,6 +387,12 @@ export default function Bimbingan({ students, records, setRecords, onNavigate }:
                     </div>
                   </div>
                   <p className="text-sm text-slate-700 mt-2 whitespace-pre-wrap leading-relaxed">{record.notes}</p>
+                  {record.handlingMethod && (
+                    <div className="mt-3 pt-3 border-t border-slate-200">
+                      <span className="text-xs font-bold text-slate-500 uppercase">PELAKSANAAN:</span>
+                      <p className="text-sm text-slate-800 font-medium">{record.handlingMethod}</p>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

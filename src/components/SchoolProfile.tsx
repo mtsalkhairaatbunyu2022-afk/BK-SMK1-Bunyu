@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { ArrowLeft, Upload, Trash2, Building, PenTool, Users } from 'lucide-react';
+import { ArrowLeft, Upload, Trash2, Building, PenTool, Users, Download } from 'lucide-react';
 
 interface SchoolProfileProps {
   onNavigate: (view: string) => void;

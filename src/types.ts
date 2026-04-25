@@ -16,4 +16,5 @@ export interface StudentRecord {
   subCategory: string;
   date: string;
   notes: string;
+  handlingMethod?: string; // e.g. "Kunjungan ke rumah", "Ruang BK", "Secara kekeluargaan"
 }
